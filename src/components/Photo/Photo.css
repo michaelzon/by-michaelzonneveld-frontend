@@ -1,0 +1,11 @@
+.photo-comments{
+    display: flex;
+    flex-direction: column;
+}
+
+.photo{
+    display: flex;
+    flex-direction: row;
+    height: 60rem;
+}
+
