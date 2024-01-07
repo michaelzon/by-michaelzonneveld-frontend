@@ -8,7 +8,6 @@ export default function Photo({photos}) {
     const [photo, setPhoto] = useState(null);
     const [error, setError] = useState(null);
     const photoId = parseInt(useParams().id)
-    console.log('photoId');
 
     useEffect(() => {
         const retrievedPhoto = photos.find(p => p.id === photoId);
@@ -24,10 +23,20 @@ export default function Photo({photos}) {
     }
 
     return (
-        <div className={'photo-comments'}>
-            <div className={'photo'}>
-                {photo ? <img src={photo.url} alt={photo.title}/> : <p> Loading photo...</p>}
-            </div>
+        <div className={'photo__flex-box--column'}>
+            {photo ?
+                <div className={'photo__flex-box--row'}>
+                    <div className={'photo__image'}>
+                        <img src={photo.url} alt={photo.title}/>
+                    </div>
+                    <div className={'photo__description'}>
+                        <span> {photo.location}</span>
+                        <span> {photo.date}</span>
+                    </div>
+                </div>
+                :
+                <p> Loading photo... </p>
+            }
             <Comments></Comments>
         </div>
     )

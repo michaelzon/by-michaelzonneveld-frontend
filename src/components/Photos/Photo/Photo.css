@@ -1,0 +1,22 @@
+.photo__flex-box--column {
+    display: flex;
+    flex-direction: column;
+}
+
+.photo__flex-box--row {
+    display: flex;
+    flex-direction: row;
+}
+
+.photo__image {
+    display: flex;
+    flex-direction: row;
+    height: 60rem;
+}
+
+.photo__description {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
