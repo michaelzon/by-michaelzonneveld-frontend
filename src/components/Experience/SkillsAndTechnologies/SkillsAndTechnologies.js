@@ -1,7 +1,6 @@
 import '../Experience.css';
 import React from "react";
 import Item from './Item';
-import { v4 as uuidv4 } from 'uuid';
 export default function SkillsAndTechnologies() {
 
     const items = [
@@ -11,19 +10,20 @@ export default function SkillsAndTechnologies() {
         },
         {
             definition: 'Technologies & Tools',
-            elements: ['HTML', 'CSS', 'SASS']
+            elements: ['HTML', 'CSS', 'SCSS', 'React', 'Laravel', 'Git', 'JSON', 'MySQL', 'Next.js', 'TailWind CSS', 'SPSS', 'Microsoft Office (Word, PowerPoint, Excel)']
         },
         {
             definition: 'Other',
-            elements: ['User Experience']
+            elements: ['User Experience', 'Object-Oriented Programming (OOP)', 'Databases', ' (Automatic) Content Analysis', 'Data Processing', 'Media Analysis', 'Customer Relation Management', 'Sales']
         }
     ];
 
     return (
         <div className={'skills-and-technologies'}>
-            {items.map(item => (
+            <h2> Skills and Technologies </h2>
+            {items.map((item, index) => (
                 <Item
-                    key={uuidv4()}
+                    key={index}
                     definition={item.definition}
                     elements={item.elements}
                 />

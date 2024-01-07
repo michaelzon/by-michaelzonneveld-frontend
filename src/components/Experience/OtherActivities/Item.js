@@ -3,18 +3,16 @@ import PropTypes from 'prop-types';
 import React from "react";
 
 Item.propTypes = {
+    period: PropTypes.string.isRequired,
     definition: PropTypes.string.isRequired,
-    elements: PropTypes.array.isRequired,
 }
 
-export default function Item({definition, elements}) {
+export default function Item({period, definition}) {
 
     return (
         <div className={'experience-item'}>
+            <span> {period} </span>
             <span> {definition} </span>
-            {elements.map((element, index) => (
-                <span key={index} id={`${index}-${element}`}> {element} </span>
-            ))}
         </div>
     )
 }

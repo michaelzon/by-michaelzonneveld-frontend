@@ -3,6 +3,8 @@ import './Experience.css';
 import Professional from "./Professional/Professional";
 import Education from "./Education/Education";
 import SkillsAndTechnologies from "./SkillsAndTechnologies/SkillsAndTechnologies";
+import OtherActivities from "./OtherActivities/OtherActivities";
+import Languages from "./Languages/Languages";
 
 export default function Experience() {
     return (
@@ -10,7 +12,8 @@ export default function Experience() {
             <Professional/>
             <Education/>
             <SkillsAndTechnologies/>
-            <ProjectsAndExtra/>
+            <OtherActivities/>
+            <Languages/>
         </div>
     );
 };

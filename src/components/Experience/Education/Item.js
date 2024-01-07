@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 Item.propTypes = {
     organisation: PropTypes.string.isRequired,
     program: PropTypes.string.isRequired,
-    location: PropTypes.string.isRequired,
     period: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired
 }
