@@ -1,0 +1,19 @@
+.footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    position: fixed; /* Fixed at the bottom */
+    bottom: 0;
+    width: 100%;
+}
+
+.footer a {
+    color: var(--very-dark-gray);
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: var(--soft-coral-pink);
+    text-decoration: underline;
+}

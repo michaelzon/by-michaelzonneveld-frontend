@@ -1,0 +1,23 @@
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-basis: calc(16.66%);
+    background-color: var(--deep-reddish-burgundy);
+    border-left: 0.8rem solid #4a4e69;
+    padding: 2rem;
+    gap: 1rem;
+}
+
+.sidebar a {
+    color: var(--very-light-gray);
+    font-size: 1.4rem;
+    text-decoration: none;
+    transition: color 0.3s ease, transform 0.3s ease;
+    padding: 0.5rem 0;
+}
+
+.sidebar a:hover {
+    color: var(--medium-sky-blue);
+    transform: translateX(3px);
+}

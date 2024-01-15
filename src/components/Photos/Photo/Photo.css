@@ -1,22 +1,33 @@
 .photo__flex-box--column {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem
 }
 
 .photo__flex-box--row {
     display: flex;
     flex-direction: row;
+    justify-content: left;
+    gap: 2rem;
 }
 
 .photo__image {
-    display: flex;
-    flex-direction: row;
-    height: 60rem;
+    display: inline-flex;
+    max-width: 40%
+}
+
+.photo__image img {
+    max-width: 100%; /* Ensures the image is not larger than its natural size */
+    height: auto; /* Maintains the aspect ratio */
 }
 
 .photo__description {
     display: flex;
     flex-direction: column;
+    align-items: start;
     gap: 1rem;
+    font-size: 1.1rem;
 }
 

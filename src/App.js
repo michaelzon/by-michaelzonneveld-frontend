@@ -3,9 +3,13 @@ import PhotoGallery from "./components/Photos/PhotoGallery/PhotoGallery";
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Photo from "./components/Photos/Photo/Photo";
-import Sidebar from "./components/SideBar";
+import Sidebar from "./components/Sidebar/SideBar";
 import Experience from "./components/Experience/Expierence";
 import Home from "./components/Home";
+import Header from "./components/Header/Header";
+import AboutMe from "./components/AboutMe/AboutMe";
+import Footer from "./components/Experience/Footer/Footer";
+
 
 export default function App() {
 
@@ -28,7 +32,7 @@ export default function App() {
         {id: 41410036, url: '/images/bologna/000041410036.JPG', album: 'bologna', title: '000041410036', location: 'Centre of Bologna', date: '21-9-21'},
 
         {id: 6036, url: '/images/morocco/6036.JPG', album: 'morocco', title: '6036', location: 'Marrakesh, Rue Yves St Laurent', date: '5-10-22'},
-        {id: 6041, url: '/images/morocco/6041.JPG', album: ' morocco', title: '6041', location: 'Marrakesh, Rue Yves St Laurent', date: '5-10-22'},
+        {id: 6041, url: '/images/morocco/6041.JPG', album: 'morocco', title: '6041', location: 'Marrakesh, Rue Yves St Laurent', date: '5-10-22'},
         {id: 6048, url: '/images/morocco/6048.JPG', album: 'morocco', title: '6048', location: 'Marrakesh, Rue Yves St Laurent', date: '5-10-22'},
         {id: 6050, url: '/images/morocco/6050.JPG', album: 'morocco', title: '6050', location: 'Marrakesh, Rue Yves St Laurent', date: '5-10-22'},
     ];
@@ -36,16 +40,18 @@ export default function App() {
     return (
         <Router>
             <div className='container'>
-                <div className='header'></div>
+                <Header></Header>
                 <div className='wrapper'>
                     <Sidebar></Sidebar>
                     <Routes>
                         <Route path={'/'} element={<Home/>}/>
+                        <Route path={'/about-me'} element={<AboutMe/>}/>
                         <Route path={'/experience'} element={<Experience/>}/>
                         <Route path={"/:album"} element={<PhotoGallery photos={photos}/>}/>
                         <Route path={"/:album/:id"} element={<Photo photos={photos} />} />
                     </Routes>
                 </div>
+                <Footer/>
             </div>
         </Router>
     );

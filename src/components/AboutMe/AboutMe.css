@@ -1,0 +1,11 @@
+.about-me {
+    display: flex;
+    flex-direction: row;
+    border: solid black;
+    justify-content: space-between;
+}
+
+.portrait {
+    display: flex;
+    width: 45%;
+}

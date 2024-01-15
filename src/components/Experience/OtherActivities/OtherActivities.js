@@ -10,7 +10,7 @@ export default function OtherActivities() {
         },
         {
             period: '09/2015 – 07/2016',
-            definition: 'Board member education committee at Amsterdam University of Applied Science..'
+            definition: 'Board member education committee at Amsterdam University of Applied Science.'
         },
         {
             period: '09/2014 – 07/2015',
