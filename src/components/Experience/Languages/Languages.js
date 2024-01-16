@@ -1,4 +1,4 @@
-import '../Experience.css';
+import '../experience.css';
 import Item from "./Item";
 import React from "react";
 

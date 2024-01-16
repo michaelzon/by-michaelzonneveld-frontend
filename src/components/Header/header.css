@@ -10,7 +10,6 @@
     padding-left: 6rem;
     padding-right: 6rem;
     padding-bottom: 1rem;
-    : 2rem;
     box-shadow: 5px 7px var(--very-dark-gray);
 }
 
@@ -39,12 +38,30 @@
 }
 
 .nav-items a {
-    color: white;
+    color: var(--warm-magenta-pink);
     transition: color 0.3s ease, transform 0.3s ease;
     text-decoration: none;
+    font-weight: bold;
+    padding-top: 0.1rem;
 }
 
 .nav-items a:hover {
-    color: lightgrey;
+    color: var(--warm-magenta-pink-darker);
     transform: translateX(0.25rem);
+}
+
+.link-and-icon {
+    display: flex;
+    gap: 1rem;
+}
+
+.logo-wrapper {
+    height: 1.2rem;
+    width: 1.2rem;
+    opacity: 0;
+    transition: opacity 0.3s ease 0.3s;
+}
+
+.link-and-icon:hover .logo-wrapper {
+    opacity: 1;
 }

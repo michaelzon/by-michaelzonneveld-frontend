@@ -1,4 +1,4 @@
-import '../Experience.css';
+import '../experience.css';
 import PropTypes from 'prop-types';
 import React from "react";
 

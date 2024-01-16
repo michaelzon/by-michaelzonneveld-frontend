@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import Comments from "../Comments/Comments";
-import './Photo.css';
+import './photo.css';
 
 
 export default function Photo({photos}) {

@@ -1,4 +1,4 @@
-import '../Experience.css';
+import '../experience.css';
 import Item from "./Item";
 import React from "react";
 
@@ -7,10 +7,10 @@ export default function Professional() {
     const professionalExperienceItems = [
         {
             role: 'Junior Developer',
-            location: 'Amsterdam',
+            location: 'Maarssen',
             organisation: 'Piggy',
             period: '03/2022 - current',
-            description: 'Worked on the business dashboard, company website, the public api and the SDK using tools like MySQL, SCSS, Next.js, TypeScript, Tailwind CSS, React.js, PHP, Laravel and Git'
+            description: 'Worked on the business dashboard, company website, the public api and the SDK using tools like MySQL, SCSS, Next.js, TypeScript, Tailwind CSS, React.js, PHP, Laravel and Git.'
         },
         {
             role: 'Student Assistant IT in Education',

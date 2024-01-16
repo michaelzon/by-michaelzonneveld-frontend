@@ -1,11 +1,11 @@
 import React from 'react';
-import './AboutMe.css';
+import './about-me.css';
 
 export default function AboutMe() {
 
     return (
         <div className={'about-me'}>
-            <div className={'description'}>
+            <div className={'about-me-description'}>
                 <span> some text that is about me </span>
             </div>
             <div className={'portrait'}>

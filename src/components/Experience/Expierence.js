@@ -1,5 +1,5 @@
 import React from 'react';
-import './Experience.css';
+import './experience.css';
 import Professional from "./Professional/Professional";
 import Education from "./Education/Education";
 import SkillsAndTechnologies from "./SkillsAndTechnologies/SkillsAndTechnologies";

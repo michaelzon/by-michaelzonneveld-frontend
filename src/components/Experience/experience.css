@@ -1,0 +1,7 @@
+.experience {
+    display: flex;
+    flex-direction: column;
+    text-transform: none;
+    justify-content: space-between;
+    gap: 1rem;
+}

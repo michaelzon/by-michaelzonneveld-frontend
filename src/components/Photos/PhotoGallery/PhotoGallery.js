@@ -1,5 +1,5 @@
 import React from 'react';
-import './PhotoGallery.css';
+import './photo-gallery.css';
 import {Link, useParams} from "react-router-dom";
 
 export default function PhotoGallery({photos}) {

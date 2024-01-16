@@ -1,4 +1,4 @@
-import '../Experience.css';
+import '../experience.css';
 import React from "react";
 import Item from './Item';
 export default function SkillsAndTechnologies() {
@@ -10,7 +10,7 @@ export default function SkillsAndTechnologies() {
         },
         {
             definition: 'Technologies & Tools',
-            elements: ['HTML', 'CSS', 'SCSS', 'React', 'Laravel', 'Git', 'JSON', 'MySQL', 'Next.js', 'TailWind CSS', 'SPSS', 'Microsoft Office (Word, PowerPoint, Excel)']
+            elements: ['HTML', 'CSS', 'SCSS', 'React', 'Laravel', 'Git', 'JSON', 'MySQL', 'Next.js', 'TailWind CSS', 'SPSS', 'Microsoft Office']
         },
         {
             definition: 'Other',

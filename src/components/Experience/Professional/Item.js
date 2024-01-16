@@ -1,4 +1,4 @@
-import '../Experience.css';
+import './item.css';
 import PropTypes from 'prop-types';
 
 Item.propTypes = {
@@ -13,11 +13,18 @@ export default function Item({role, organisation, location, period, description}
 
     return (
         <div className={'experience-item'}>
-            <span> {role} </span>
-            <span> {organisation} </span>
-            <span> {location}</span>
-            <span> {period} </span>
-            <span> {description} </span>
+            <div className={'role-and-organisation'}>
+                <h3> {role} </h3>
+                <h4> {organisation} </h4>
+            </div>
+            <div className={'professional-period'}>
+                <div>
+                    <span> {period} </span>
+                </div>
+            </div>
+            <div className={'professional-description'}>
+                <span> {description} </span>
+            </div>
         </div>
     )
 }
