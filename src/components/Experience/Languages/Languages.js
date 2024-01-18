@@ -1,4 +1,4 @@
-import '../experience.css';
+import './item.css';
 import Item from "./Item";
 import React from "react";
 
@@ -6,11 +6,11 @@ export default function Languages() {
 
     const items = [
         {
-            language: 'dutch',
+            language: 'Dutch',
             level: 'Native Proficiency',
         },
         {
-            language: 'english',
+            language: 'English',
             level: 'Professional Proficiency',
         }
     ];
