@@ -9,6 +9,7 @@ export default function Sidebar() {
             <Link to={'/experience'}>experience</Link>
             <Link to={'/bologna'}>bologna, 2021</Link>
             <Link to={'/morocco'}>morocco, 2022</Link>
+            <Link to={'/games'}> games </Link>
         </div>
     )
 }
