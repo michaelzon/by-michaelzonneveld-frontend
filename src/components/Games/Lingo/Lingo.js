@@ -7,28 +7,27 @@ export default function Lingo() {
     const [error, setError] = useState(null);
     const items = Array.from({length: 30})
     const [firstGuess, setFirstGuess] = useState('');
-    const [secondGuess, setSecondGuess] = useState('');
-    const [thirdGuess, setThirdGuess] = useState('');
-    const [fourthGuess, setFourthGuess] = useState('');
-    const [fifthGuess, setFifthGuess] = useState('');
-    const [guesses, setGuesses] = useState([firstGuess, secondGuess, thirdGuess, fourthGuess, fifthGuess]);
+    const [tempFirstGuess, setTempFirstGuess] = useState('moeder');
+    const [tempFirstGuessAsArray, setTempFirstGuessAsArray] = useState(tempFirstGuess.split(''));
+    const [secondGuess, setSecondGuess] = useState('moeten');
+    const [thirdGuess, setThirdGuess] = useState('moetje');
+    const [fourthGuess, setFourthGuess] = useState('moesje');
+    const [fifthGuess, setFifthGuess] = useState('moeite');
+    const [guesses, setGuesses] = useState([tempFirstGuess, secondGuess, thirdGuess, fourthGuess, fifthGuess]);
     const handleChange = (event) => {
         setFirstGuess(event.target.value);
     }
 
     const updateGuesses = () => {
-        console.log(firstGuess);
         setGuesses([firstGuess, secondGuess, thirdGuess, fourthGuess, fifthGuess]);
     }
 
-
-    console.log(guesses);
-
     const handleSubmit = (event) => {
-        updateGuesses()
+        // updateGuesses()
         event.preventDefault();
         alert('The word that you are guessing: ' + firstGuess);
     }
+
 
 
     return (
@@ -38,6 +37,16 @@ export default function Lingo() {
                     <div key={i} className="grid-item"> {i} </div>
                 ))}
             </div>
+            <div className={'grid'} id={'henk'}>
+                {guesses.map((word, i) => {
+                        const wordAsArray = word.split('');
+                        return wordAsArray.map((eachLetter, j) => {
+                                return <div key={j} className="grid-item"> {eachLetter} </div>
+                            }
+                        )
+                    }
+                )}
+            </div>
             <div className={'form'}>
                 <form onSubmit={handleSubmit}>
                     <label>
@@ -46,7 +55,7 @@ export default function Lingo() {
                     </label>
                     <button type={'submit'}> Submit</button>
                 </form>
-                {/*<p>You entered: {firstGuess}</p>*/}
+                <p>You entered: {tempFirstGuess + secondGuess}</p>
             </div>
         </div>
 
