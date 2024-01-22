@@ -1,33 +1,43 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import './lingo.css';
+import axios from "axios";
 
 
 export default function Lingo() {
-    const items = Array.from({length: 30})
-
+    const items = Array.from({length: 25})
+    const [lingoData, setLingoData] = useState(null);
 
     const [error, setError] = useState(null);
     const [count, setCount] = useState(0);
 
     const [currentInput, setCurrentInput] = useState('');
+    const [firstLetter, setFirstLetter] = useState('');
+    const [firstRow, setFirstRow] = useState(new Array(5).fill(''));
+    const [secondRow, setSecondRow] = useState(new Array(5).fill(''));
+    const [thirdRow, setThirdRow] = useState(new Array(5).fill(''));
+    const [fourthRow, setFourthRow] = useState(new Array(5).fill(''));
+    const [fifthRow, setFifthRow] = useState(new Array(5).fill(''));
 
-    const [firstGuessAsString, setFirstGuessAsString] = useState('');
-    const [tempFirstGuess, setTempFirstGuess] = useState(new Array(6).fill(''));
-
-    const [firstGuess, setFirstGuess] = useState(new Array(6).fill(''));
-    const [secondGuess, setSecondGuess] = useState(new Array(6).fill(''));
-    const [thirdGuess, setThirdGuess] = useState(new Array(6).fill(''));
-    const [fourthGuess, setFourthGuess] = useState(new Array(6).fill(''));
-    const [fifthGuess, setFifthGuess] = useState(new Array(6).fill(''));
-
-    const [guesses, setGuesses] = useState([firstGuess, secondGuess, thirdGuess, fourthGuess, fifthGuess]);
+    const [rows, setRows] = useState([firstRow, secondRow, thirdRow, fourthRow, fifthRow]);
 
     useEffect(() => {
-        fetch('https://api.dictionaryapi.dev/api/v2/entries/en/friend')
-            .then(response => response.json())
-            .then(json => setData(json))
-            .catch(error => console.error(error));
+        axios.get('https://api.dictionaryapi.dev/api/v2/entries/en/hello')
+            .then(response => {
+                const data = response.data[0]
+                setLingoData(data);
+                return data
+            })
+            .then(data  => {
+                if (data && data.word) {
+                    const rowsWithFirstLetter = [...rows]
+                    rowsWithFirstLetter[0][0] = data.word[0];
+                    setRows(rowsWithFirstLetter);
+                }
+            })
+            .catch(error => {
+                console.log('error fetching lingo data', error);
+            });
     }, []);
 
     const handleChange = (event) => {
@@ -36,7 +46,7 @@ export default function Lingo() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (currentInput.length !== 6) {
+        if (currentInput.length !== 5) {
             setError('Word must be of six characters');
             setCurrentInput('');
             return;
@@ -48,9 +58,9 @@ export default function Lingo() {
 
         setCurrentInput('');
 
-        const newGuesses = [...guesses];
-        newGuesses[count] = tempArr
-        setGuesses(newGuesses);
+        const newRows = [...rows];
+        newRows[count] = tempArr
+        setRows(newRows);
         setCount(count + 1);
     }
 
@@ -62,20 +72,20 @@ export default function Lingo() {
                 ))}
             </div>
             <div className={'grid'} id={'henk'}>
-                {guesses.map((word, i) => (
+                {rows.map((word, i) => (
                     word.map((letter, j) => (
                         <div key={`${i}-${j}`} className="grid-item">{letter}</div>
                     ))
                 ))}
             </div>
-            <div> {firstGuess}</div>
+            <div> {firstRow}</div>
             <div className={'form'}>
                 <form onSubmit={handleSubmit}>
                     <label>
                         Word:
                         <input type={'text'} value={currentInput} onChange={handleChange}/>
                     </label>
-                    <button type={'submit'} disabled={currentInput.length !== 6}> Submit</button>
+                    <button type={'submit'} disabled={currentInput.length !== 5}> Submit</button>
                 </form>
                 <p>You entered: {}</p>
             </div>

@@ -6,7 +6,7 @@
 .grid {
     display: grid;
     grid-template-rows: repeat(5, 1fr);
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 1rem;
 }
 
@@ -23,9 +23,6 @@
 .form {
     display: flex;
     flex-direction: column;
-    border: solid red 1px;
+    margin-top: 1rem;
 }
 
-#henk {
-    border: solid blue 1px;
-}
