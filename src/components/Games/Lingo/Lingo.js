@@ -23,6 +23,13 @@ export default function Lingo() {
 
     const [guesses, setGuesses] = useState([firstGuess, secondGuess, thirdGuess, fourthGuess, fifthGuess]);
 
+    useEffect(() => {
+        fetch('https://api.dictionaryapi.dev/api/v2/entries/en/friend')
+            .then(response => response.json())
+            .then(json => setData(json))
+            .catch(error => console.error(error));
+    }, []);
+
     const handleChange = (event) => {
         setCurrentInput(event.target.value);
     }
@@ -41,35 +48,10 @@ export default function Lingo() {
 
         setCurrentInput('');
 
-        if (count === 0) {
-            setGuesses([tempArr, secondGuess, thirdGuess, fourthGuess, fifthGuess]);
-        }
-
-        if (count === 1) {
-            const newGuesses = [...guesses];
-            newGuesses[1] = tempArr
-            setGuesses(newGuesses);
-        }
-
-        if (count === 2) {
-            const newGuesses = [...guesses];
-            newGuesses[2] = tempArr
-            setGuesses(newGuesses);
-        }
-
-        if (count === 3) {
-            const newGuesses = [...guesses];
-            newGuesses[3] = tempArr
-            setGuesses(newGuesses);
-        }
-
-        if (count === 4) {
-            const newGuesses = [...guesses];
-            newGuesses[4] = tempArr
-            setGuesses(newGuesses);
-        }
-
-        setCount(count +1);
+        const newGuesses = [...guesses];
+        newGuesses[count] = tempArr
+        setGuesses(newGuesses);
+        setCount(count + 1);
     }
 
     return (
