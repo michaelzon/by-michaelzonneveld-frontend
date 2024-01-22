@@ -4,17 +4,24 @@ import './lingo.css';
 
 
 export default function Lingo() {
-    const [error, setError] = useState(null);
     const items = Array.from({length: 30})
+
+
+    const [error, setError] = useState(null);
+    const [count, setCount] = useState(0);
+
     const [currentInput, setCurrentInput] = useState('');
+
     const [firstGuessAsString, setFirstGuessAsString] = useState('');
-    const [firstGuess, setFirstGuess] = useState(new Array(6).fill(''));
     const [tempFirstGuess, setTempFirstGuess] = useState(new Array(6).fill(''));
+
+    const [firstGuess, setFirstGuess] = useState(new Array(6).fill(''));
     const [secondGuess, setSecondGuess] = useState(new Array(6).fill(''));
     const [thirdGuess, setThirdGuess] = useState(new Array(6).fill(''));
     const [fourthGuess, setFourthGuess] = useState(new Array(6).fill(''));
     const [fifthGuess, setFifthGuess] = useState(new Array(6).fill(''));
-    const [guesses, setGuesses] = useState([tempFirstGuess, secondGuess, thirdGuess, fourthGuess, fifthGuess]);
+
+    const [guesses, setGuesses] = useState([firstGuess, secondGuess, thirdGuess, fourthGuess, fifthGuess]);
 
     const handleChange = (event) => {
         setCurrentInput(event.target.value);
@@ -22,7 +29,6 @@ export default function Lingo() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-
         if (currentInput.length !== 6) {
             setError('Word must be of six characters');
             setCurrentInput('');
@@ -30,16 +36,41 @@ export default function Lingo() {
         }
 
         alert('The word that you are guessing: ' + currentInput);
-        setFirstGuessAsString(currentInput);
+
         let tempArr = currentInput.split('');
+
         setCurrentInput('');
-        setGuesses([tempArr, secondGuess, thirdGuess, fourthGuess, fifthGuess]);
+
+        if (count === 0) {
+            setGuesses([tempArr, secondGuess, thirdGuess, fourthGuess, fifthGuess]);
+        }
+
+        if (count === 1) {
+            const newGuesses = [...guesses];
+            newGuesses[1] = tempArr
+            setGuesses(newGuesses);
+        }
+
+        if (count === 2) {
+            const newGuesses = [...guesses];
+            newGuesses[2] = tempArr
+            setGuesses(newGuesses);
+        }
+
+        if (count === 3) {
+            const newGuesses = [...guesses];
+            newGuesses[3] = tempArr
+            setGuesses(newGuesses);
+        }
+
+        if (count === 4) {
+            const newGuesses = [...guesses];
+            newGuesses[4] = tempArr
+            setGuesses(newGuesses);
+        }
+
+        setCount(count +1);
     }
-
-    console.log('First Guess: ', firstGuess);
-    console.log(guesses);
-
-
 
     return (
         <div className={'lingo-container'}>
