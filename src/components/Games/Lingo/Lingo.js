@@ -6,27 +6,38 @@ import './lingo.css';
 export default function Lingo() {
     const [error, setError] = useState(null);
     const items = Array.from({length: 30})
-    const [firstGuess, setFirstGuess] = useState('');
-    const [tempFirstGuess, setTempFirstGuess] = useState('moeder');
-    const [tempFirstGuessAsArray, setTempFirstGuessAsArray] = useState(tempFirstGuess.split(''));
-    const [secondGuess, setSecondGuess] = useState('moeten');
-    const [thirdGuess, setThirdGuess] = useState('moetje');
-    const [fourthGuess, setFourthGuess] = useState('moesje');
-    const [fifthGuess, setFifthGuess] = useState('moeite');
+    const [currentInput, setCurrentInput] = useState('');
+    const [firstGuessAsString, setFirstGuessAsString] = useState('');
+    const [firstGuess, setFirstGuess] = useState(new Array(6).fill(''));
+    const [tempFirstGuess, setTempFirstGuess] = useState(new Array(6).fill(''));
+    const [secondGuess, setSecondGuess] = useState(new Array(6).fill(''));
+    const [thirdGuess, setThirdGuess] = useState(new Array(6).fill(''));
+    const [fourthGuess, setFourthGuess] = useState(new Array(6).fill(''));
+    const [fifthGuess, setFifthGuess] = useState(new Array(6).fill(''));
     const [guesses, setGuesses] = useState([tempFirstGuess, secondGuess, thirdGuess, fourthGuess, fifthGuess]);
-    const handleChange = (event) => {
-        setFirstGuess(event.target.value);
-    }
 
-    const updateGuesses = () => {
-        setGuesses([firstGuess, secondGuess, thirdGuess, fourthGuess, fifthGuess]);
+    const handleChange = (event) => {
+        setCurrentInput(event.target.value);
     }
 
     const handleSubmit = (event) => {
-        // updateGuesses()
         event.preventDefault();
-        alert('The word that you are guessing: ' + firstGuess);
+
+        if (currentInput.length !== 6) {
+            setError('Word must be of six characters');
+            setCurrentInput('');
+            return;
+        }
+
+        alert('The word that you are guessing: ' + currentInput);
+        setFirstGuessAsString(currentInput);
+        let tempArr = currentInput.split('');
+        setCurrentInput('');
+        setGuesses([tempArr, secondGuess, thirdGuess, fourthGuess, fifthGuess]);
     }
+
+    console.log('First Guess: ', firstGuess);
+    console.log(guesses);
 
 
 
@@ -38,24 +49,22 @@ export default function Lingo() {
                 ))}
             </div>
             <div className={'grid'} id={'henk'}>
-                {guesses.map((word, i) => {
-                        const wordAsArray = word.split('');
-                        return wordAsArray.map((eachLetter, j) => {
-                                return <div key={j} className="grid-item"> {eachLetter} </div>
-                            }
-                        )
-                    }
-                )}
+                {guesses.map((word, i) => (
+                    word.map((letter, j) => (
+                        <div key={`${i}-${j}`} className="grid-item">{letter}</div>
+                    ))
+                ))}
             </div>
+            <div> {firstGuess}</div>
             <div className={'form'}>
                 <form onSubmit={handleSubmit}>
                     <label>
                         Word:
-                        <input type={'text'} value={firstGuess} onChange={handleChange}/>
+                        <input type={'text'} value={currentInput} onChange={handleChange}/>
                     </label>
-                    <button type={'submit'}> Submit</button>
+                    <button type={'submit'} disabled={currentInput.length !== 6}> Submit</button>
                 </form>
-                <p>You entered: {tempFirstGuess + secondGuess}</p>
+                <p>You entered: {}</p>
             </div>
         </div>
 
