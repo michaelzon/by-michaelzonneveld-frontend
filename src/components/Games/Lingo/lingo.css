@@ -28,7 +28,7 @@
     background-color: var(--earthy-red);
 }
 
-.letter-in-word-but-not-in-right-place {
+.misplaced-letter {
     background-color: var(--mustard-yellow);
 }
 
