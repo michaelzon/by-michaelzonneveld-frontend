@@ -10,14 +10,15 @@ export default function Lingo() {
 
     const [error, setError] = useState(null);
     const [count, setCount] = useState(0);
-
     const [currentInput, setCurrentInput] = useState('');
-    const [firstLetter, setFirstLetter] = useState('');
+    const [mysteryWord, setMysteryWord] = useState([]);
+
     const [firstRow, setFirstRow] = useState(new Array(5).fill(''));
     const [secondRow, setSecondRow] = useState(new Array(5).fill(''));
     const [thirdRow, setThirdRow] = useState(new Array(5).fill(''));
     const [fourthRow, setFourthRow] = useState(new Array(5).fill(''));
     const [fifthRow, setFifthRow] = useState(new Array(5).fill(''));
+
 
     const [rows, setRows] = useState([firstRow, secondRow, thirdRow, fourthRow, fifthRow]);
 
@@ -28,8 +29,9 @@ export default function Lingo() {
                 setLingoData(data);
                 return data
             })
-            .then(data  => {
+            .then(data => {
                 if (data && data.word) {
+                    setMysteryWord(data.word.split(''));
                     const rowsWithFirstLetter = [...rows]
                     rowsWithFirstLetter[0][0] = data.word[0];
                     setRows(rowsWithFirstLetter);
@@ -44,6 +46,13 @@ export default function Lingo() {
         setCurrentInput(event.target.value);
     }
 
+    useEffect(() => {
+        if (firstRow[0] === mysteryWord[0]) {
+            console.log('eerste letter klopt..');
+        }
+        console.log('rows', rows);
+        }, [rows]);
+
     const handleSubmit = (event) => {
         event.preventDefault();
         if (currentInput.length !== 5) {
@@ -51,17 +60,14 @@ export default function Lingo() {
             setCurrentInput('');
             return;
         }
-
         alert('The word that you are guessing: ' + currentInput);
 
         let tempArr = currentInput.split('');
-
-        setCurrentInput('');
-
         const newRows = [...rows];
         newRows[count] = tempArr
         setRows(newRows);
         setCount(count + 1);
+        setCurrentInput('');
     }
 
     return (
@@ -74,7 +80,14 @@ export default function Lingo() {
             <div className={'grid'} id={'henk'}>
                 {rows.map((word, i) => (
                     word.map((letter, j) => (
-                        <div key={`${i}-${j}`} className="grid-item">{letter}</div>
+                        <div key={`${i}-${j}`} className={`grid-item ${i === 0 && j === 0 ? 'letter-in-right-place' : ''}`}>{letter}</div>
+                    ))
+                ))}
+            </div>
+            <div className={'grid'} id={'henk'}>
+                {rows.map((word, i) => (
+                    word.map((letter, j) => (
+                        <div key={`${i}-${j}`} className={`grid-item ${i === 0 && j === 0 ? 'letter-in-right-place' : ''}`}>{letter}</div>
                     ))
                 ))}
             </div>
@@ -87,7 +100,6 @@ export default function Lingo() {
                     </label>
                     <button type={'submit'} disabled={currentInput.length !== 5}> Submit</button>
                 </form>
-                <p>You entered: {}</p>
             </div>
         </div>
 
