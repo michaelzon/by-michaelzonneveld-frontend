@@ -1,7 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import './lingo.css';
 import axios from "axios";
-
 
 export default function Lingo() {
     const items = Array.from({length: 25})
@@ -11,6 +10,7 @@ export default function Lingo() {
     const [currentInput, setCurrentInput] = useState('');
     const [mysteryWord, setMysteryWord] = useState([]);
     const [rows, setRows] = useState([]);
+    const charOccurrences = useRef({});
 
     useEffect(() => {
         const initialRows = Array(5).fill(null).map(() =>
@@ -20,37 +20,70 @@ export default function Lingo() {
                 misPlacedLetter: false
             }))
         );
+
         axios.get('https://api.dictionaryapi.dev/api/v2/entries/en/hello')
             .then(response => {
                 const data = response.data[0]
                 setData(data);
-                return data
-            })
-            .then(data => {
-                if (data && data.word) {
-                    initialRows[0][0].letter = data.word[0];
-                    initialRows[0][0].inRightPlace = true;
-                    setRows(initialRows);
-                    const mysteryWord = data.word.split('').map(char => ({
-                            letter: char,
-                            inRightPlace: true,
-                            misPlacedLetter: false
-                    }))
-                    setMysteryWord(mysteryWord);
-                }
+                initialRows[0][0].letter = data.word[0];
+                initialRows[0][0].inRightPlace = true;
+                setRows(initialRows);
+                const mysteryWord = data.word.split('');
+                setMysteryWord(mysteryWord);
             })
             .catch(error => {
                 console.log('error fetching lingo data', error);
             });
     }, []);
 
-    console.log('mysteryWord', mysteryWord);
-
     const handleChange = (event) => {
         setCurrentInput(event.target.value);
     }
 
+    function handleCharOccurrences() {
+        if (mysteryWord.length > 0) {
+            const newOccurrences = {};
+            mysteryWord.forEach((char) => {
+                if (newOccurrences[char]) {
+                    newOccurrences[char] += 1;
+                } else {
+                    newOccurrences[char] = 1;
+                }
+            });
+            charOccurrences.current = newOccurrences;
+        }
+    }
+
+    const handleRowCheck = () => {
+        const inputArray = currentInput.split('');
+        const newRows = [...rows];
+        inputArray.map((char, i) => {
+
+            newRows[count][i].letter = char;
+            if (newRows[count][i].letter === mysteryWord[i]) {
+                newRows[count][i].inRightPlace = true;
+
+                if (charOccurrences.current[mysteryWord[i]] > 0) {
+                    charOccurrences.current[mysteryWord[i]] = charOccurrences.current[mysteryWord[i]] - 1
+                    console.log(charOccurrences.current)
+                }
+            }
+
+            if (mysteryWord.includes(newRows[count][i].letter) && newRows[count][i].inRightPlace === false) {
+
+                if (charOccurrences.current[newRows[count][i].letter] > 0) {
+                    newRows[count][i].misPlacedLetter = true;
+                }
+            }
+        });
+
+        handleCharOccurrences();
+
+        return newRows
+    }
+
     const handleSubmit = (event) => {
+        handleCharOccurrences();
         event.preventDefault();
         if (currentInput.length !== 5) {
             setError('Word must be of six characters');
@@ -58,18 +91,11 @@ export default function Lingo() {
             return;
         }
         alert('The word that you are guessing: ' + currentInput);
-
-        const wordAsArray = currentInput.split('');
-        const newRows = [...rows];
-        wordAsArray.map((char, i) => (
-            newRows[count][i].letter = char
-        ))
+        const newRows = handleRowCheck()
         setRows(newRows);
         setCount(count + 1);
         setCurrentInput('');
     }
-
-    console.log(rows);
 
     return (
         <div className={'lingo-container'}>
