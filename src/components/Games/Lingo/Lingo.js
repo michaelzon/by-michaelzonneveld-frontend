@@ -19,6 +19,7 @@ export default function Lingo() {
                 inRightPlace: false,
                 misPlacedLetter: false
             }))
+            
         );
 
         axios.get('https://api.dictionaryapi.dev/api/v2/entries/en/hello')
