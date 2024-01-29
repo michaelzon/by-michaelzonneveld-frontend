@@ -17,9 +17,8 @@ export default function Lingo() {
             Array(5).fill().map(() => ({
                 letter: '',
                 inRightPlace: false,
-                misPlacedLetter: false
+                misPlacedLetter: false,
             }))
-            
         );
 
         axios.get('https://api.dictionaryapi.dev/api/v2/entries/en/hello')
@@ -59,24 +58,32 @@ export default function Lingo() {
         const inputArray = currentInput.split('');
         const newRows = [...rows];
         inputArray.map((char, i) => {
-
             newRows[count][i].letter = char;
             if (newRows[count][i].letter === mysteryWord[i]) {
                 newRows[count][i].inRightPlace = true;
 
+                // if a letter is marked as correctly placed we need to decrement that char occurrence of that letter,
+                // so it is not marked as misplaced later on
                 if (charOccurrences.current[mysteryWord[i]] > 0) {
                     charOccurrences.current[mysteryWord[i]] = charOccurrences.current[mysteryWord[i]] - 1
-                    console.log(charOccurrences.current)
-                }
-            }
-
-            if (mysteryWord.includes(newRows[count][i].letter) && newRows[count][i].inRightPlace === false) {
-
-                if (charOccurrences.current[newRows[count][i].letter] > 0) {
-                    newRows[count][i].misPlacedLetter = true;
                 }
             }
         });
+
+        // this ensures that the first 'o' in the misspelled 'hollo' does not get a yellow mark,
+        // as there is only one occurrence for that letter in the input that is already correctly placed
+        // we also need a counter because we don't want that the number of yellow marks overrides the frequency
+        // of the occurring letter
+        inputArray.map((char, i) => {
+            let misplacedCounter = 0;
+            newRows[count].map((item, i) => {
+                if (char === item.letter && item.inRightPlace === false && mysteryWord.includes(char)
+                    && charOccurrences.current[newRows[count][i].letter] > misplacedCounter ) {
+                    newRows[count][i].misPlacedLetter = true;
+                    misplacedCounter = misplacedCounter + 1;
+                }
+            })
+        })
 
         handleCharOccurrences();
 
