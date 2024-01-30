@@ -12,6 +12,8 @@ export default function Slingo() {
     const [rows, setRows] = useState([]);
     const charOccurrences = useRef({});
     const [requestExecuted, isRequestExecuted] = useState(false);
+    const [userScore, setUserScore] = useState(0);
+    let [numberOfRounds, setNumberOfRounds] = useState(1);
 
     useEffect(() => {
         if (!requestExecuted) {
@@ -99,6 +101,14 @@ export default function Slingo() {
         })
     }
 
+    const calculateScore = (newRow) => {
+        const correct = newRow.every(item => item.inRightPlace === true);
+        if (correct) {
+            setUserScore(+25);
+            setNumberOfRounds(+1);
+        }
+    }
+
     const handleRowCheck = () => {
         const input = currentInput.split('');
         const newRows = [...rows];
@@ -106,6 +116,8 @@ export default function Slingo() {
         markRightPlaces(input, mysteryWord, currentRow, newRows, charOccurrences);
 
         markMisplacements(input, mysteryWord, currentRow, newRows, charOccurrences);
+
+        calculateScore(newRows[currentRow]);
 
         handleCharOccurrences();
 
@@ -157,18 +169,19 @@ export default function Slingo() {
                 <div className={'slingo-wrapper'}>
                     <div className={'slingo-container'}>
                         <div className={'grid'}>
-                            {rows.map((row, i) => (
-                                row.map((item, j) => (
+                            {rows.map((row, i) => {
+                                const allInRightPlace = row.every(item => item.inRightPlace);
+                                return row.map((item, j) => (
                                     <div key={`${i}-${j}`}
-                                         className={`grid-item ${item.inRightPlace ? 'letter-in-right-place' : ''} ${item.misPlacedLetter ? 'misplaced-letter' : ''} `}>
+                                         className={`grid-item ${allInRightPlace ? 'all-correct' : ''} ${item.inRightPlace ? 'letter-in-right-place' : ''} ${item.misPlacedLetter ? 'misplaced-letter' : ''}`}>
                                         {item.letter}
                                     </div>
-                                ))
-                            ))}
+                                ));
+                            })}
                         </div>
                     </div>
                 </div>
-                <div className={'form-wrapper'}>
+                <div className={'form-and-score'}>
                     <form className={'form-container'} onSubmit={handleSubmit}>
                         <div className={'form-input-box'}>
                             <div className={'form-guess-wrapper'}>
@@ -191,6 +204,9 @@ export default function Slingo() {
                             </div>
                         }
                     </form>
+                    <div className={'score-container'}>
+                        Your score: {userScore}
+                    </div>
                 </div>
             </div>
         </div>
