@@ -1,0 +1,225 @@
+.logo-and-game-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 6rem;
+    background-color: var(--very-light-gray-darker);
+    border-radius: 2rem;
+    padding: 4rem;
+}
+
+.slingo-logo-wrapper {
+    display: flex;
+    height: 100%;
+    padding-left: 10rem;
+}
+
+.slingo-logo {
+    color: var(--white-but-not-too-white);
+    display: flex;
+    font-size: xxx-large;
+    font-weight: bold;
+    height: 12rem;
+    width: 100%;
+    position: relative;
+}
+
+.slingo-letter {
+    padding: 1px;
+    width: 8rem;
+    height: 8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 7.5rem;
+    font-weight: bold;
+    border: 2px solid var(--white-but-not-too-white);
+    border-radius: 20px;
+}
+
+.slingo-letter-s {
+    position: absolute;
+    top: 1.25rem;
+    left: 0;
+    background-color: var(--teal-blue);
+}
+
+.slingo-letter-l {
+    position: absolute;
+    top: 0.25rem;
+    left: 7.25rem;
+    z-index: 1;
+    background-color: var(--mustard-yellow);
+}
+
+.slingo-letter-i {
+    position: absolute;
+    top: 3rem;
+    left: 14rem;
+    z-index: 0;
+    background-color: var(--muted-sage-green);
+}
+
+.slingo-letter-n {
+    position: absolute;
+    top: 1.25rem;
+    left: 20.5rem;
+    z-index: 1;
+    background-color: var(--deep-reddish-burgundy);
+}
+
+.slingo-letter-g {
+    position: absolute;
+    top: 2.75rem;
+    left: 27.5rem;
+    z-index: 0;
+    background-color: var(--mustard-yellow);
+}
+
+.slingo-letter-o {
+    position: absolute;
+    top: 2rem;
+    left: 35rem;
+    z-index: 0;
+    background-color: var(--teal-blue);
+}
+
+.slingo-and-form-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 6rem;
+}
+
+.slingo-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.slingo-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-rows: repeat(5, 1fr);
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.grid-item {
+    background-color: var(--teal-blue);
+    border: 2px solid var(--very-light-gray-darker);
+    color: var(--very-light-gray);
+    padding: 1px;
+    width: 6rem;
+    height: 6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4.5rem;
+    font-weight: bold;
+}
+
+.letter-in-right-place {
+    background-color: var(--deep-reddish-burgundy);
+}
+
+.misplaced-letter {
+    background-color: var(--mustard-yellow);
+}
+
+.form-wrapper {
+    display: flex;
+    flex-direction: column;
+    color: var(--very-dark-gray);
+    min-height: 100%;
+    max-height: 100%;
+}
+
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 1rem;
+    background-color: var(--soft-coral-pink);
+    padding: 2.5rem 2rem;
+    border-radius: 10px;
+    border: solid 2px var(--earthy-red);
+}
+
+.form-input-box {
+    background-color: var(--golden-yellow);
+    display: flex;
+    flex-direction: column;
+    border-radius: 6px;
+    border: solid var(--deep-reddish-burgundy) 2px;
+    padding: 1rem;
+}
+
+.form-guess-wrapper {
+    display: flex;
+    color: var(--very-dark-gray-light);
+    justify-content: space-around;
+}
+
+.form-guess {
+    font-size: 2rem;
+}
+
+.form-container input[type='text'] {
+    font-size: x-large;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--light-blue-gray);
+    border-radius: 4px;
+}
+
+.form-input {
+    font-family: 'Courier New', 'Courier', monospace;
+}
+
+.form-container input[type='text']:focus {
+    outline: 2px solid var(--teal-blue);
+}
+
+.form-container button {
+    font-family: 'Courier New', 'Courier', monospace;
+    background-color: var(--teal-blue);
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    font-size: medium;
+    cursor: pointer;
+}
+
+.form-container button:disabled {
+    background-color: var(--light-blue-gray);
+    cursor: default;
+}
+
+.error-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-top: 0.5rem;
+    margin-right: 1rem;
+}
+
+.error-message {
+    display: flex;
+    color: #d9534f;
+    background-color: #f2dede;
+    border: 1px solid #ebccd1;
+    justify-content: space-around;
+    padding: 10px;
+    margin-top: 1rem;
+    border-radius: 5px;
+    font-size: large;
+    font-weight: bold;
+}
+
+.error-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+}

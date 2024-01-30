@@ -9,7 +9,7 @@ import Home from "./components/Home";
 import Header from "./components/Header/Header";
 import AboutMe from "./components/AboutMe/AboutMe";
 import Footer from "./components/Footer/Footer";
-import Lingo from "./components/Games/Lingo/Lingo";
+import Slingo from "./components/Games/Slingo/Slingo";
 import Overview from "./components/Games/Overview";
 
 
@@ -193,7 +193,7 @@ export default function App() {
                             <Route path={"/:album"} element={<PhotoGallery photos={photos}/>}/>
                             <Route path={"/:album/:id"} element={<Photo photos={photos}/>}/>
                             <Route path={"/games/"} element={<Overview/>}/>
-                            <Route path={"/games/lingo"} element={<Lingo/>}/>
+                            <Route path={"/games/slingo"} element={<Slingo/>}/>
                         </Routes>
                     </div>
                 </div>

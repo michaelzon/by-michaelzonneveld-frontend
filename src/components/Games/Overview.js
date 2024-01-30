@@ -6,8 +6,8 @@ export default function Overview() {
 
     return (
         <div className='games-overview'>
-            <Link to={`/games/lingo`}>
-                <p> lingo </p>
+            <Link to={`/games/slingo`}>
+                <p> Slingo </p>
             </Link>
         </div>
     );

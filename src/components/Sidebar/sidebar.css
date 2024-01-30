@@ -3,8 +3,8 @@
     flex-direction: column;
     min-width: 20rem;
     max-width: 20rem;
-    min-height: 50rem;
-    max-height: 50rem;
+    min-height: 70rem;
+    max-height: 70rem;
     background-color: var(--deep-reddish-burgundy);
     box-shadow: 5px 7px var(--very-dark-gray);
     padding-top: 4rem;
