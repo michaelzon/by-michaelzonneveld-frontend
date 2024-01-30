@@ -11,8 +11,20 @@ export default function Lingo() {
     const [mysteryWord, setMysteryWord] = useState([]);
     const [rows, setRows] = useState([]);
     const charOccurrences = useRef({});
+    const [requestExecuted, isRequestExecuted] = useState(false);
 
     useEffect(() => {
+        if (!requestExecuted) {
+            performPreRequestOperations();
+        }
+    }, [requestExecuted]);
+
+    function performPreRequestOperations() {
+        const shortenedAlphabet = [...'abcdefghijklmnoprstuvwz'];
+        const randomIndex = Math.floor(Math.random() * shortenedAlphabet.length);
+        const randomLetter = shortenedAlphabet[randomIndex];
+        const randomInt = Math.floor(Math.random() * 100);
+
         const initialRows = Array(5).fill(null).map(() =>
             Array(5).fill().map(() => ({
                 letter: '',
@@ -21,20 +33,23 @@ export default function Lingo() {
             }))
         );
 
-        axios.get('https://api.dictionaryapi.dev/api/v2/entries/en/hello')
+        axios.get(`https://api.datamuse.com/words?sp=${randomLetter}????`)
             .then(response => {
-                const data = response.data[0]
-                setData(data);
-                initialRows[0][0].letter = data.word[0];
-                initialRows[0][0].inRightPlace = true;
-                setRows(initialRows);
-                const mysteryWord = data.word.split('');
-                setMysteryWord(mysteryWord);
+                if (response.data.length > randomInt && response.data[randomInt].word) {
+                    isRequestExecuted(true);
+                    const data = response.data[randomInt]
+                    setData(data);
+                    initialRows[0][0].letter = data.word[0];
+                    initialRows[0][0].inRightPlace = true;
+                    setRows(initialRows);
+                    const mysteryWord = data.word.split('');
+                    setMysteryWord(mysteryWord);
+                }
             })
             .catch(error => {
                 console.log('error fetching lingo data', error);
             });
-    }, []);
+    }
 
     const handleChange = (event) => {
         setCurrentInput(event.target.value);
@@ -57,6 +72,7 @@ export default function Lingo() {
     const handleRowCheck = () => {
         const inputArray = currentInput.split('');
         const newRows = [...rows];
+        console.log(count);
         inputArray.map((char, i) => {
             newRows[count][i].letter = char;
             if (newRows[count][i].letter === mysteryWord[i]) {
@@ -78,7 +94,7 @@ export default function Lingo() {
             let misplacedCounter = 0;
             newRows[count].map((item, i) => {
                 if (char === item.letter && item.inRightPlace === false && mysteryWord.includes(char)
-                    && charOccurrences.current[newRows[count][i].letter] > misplacedCounter ) {
+                    && charOccurrences.current[newRows[count][i].letter] > misplacedCounter) {
                     newRows[count][i].misPlacedLetter = true;
                     misplacedCounter = misplacedCounter + 1;
                 }
@@ -94,8 +110,17 @@ export default function Lingo() {
         handleCharOccurrences();
         event.preventDefault();
         if (currentInput.length !== 5) {
-            setError('Word must be of six characters');
+            setError('Word must be of six characters.');
+            alert(error);
             setCurrentInput('');
+            setCount(count);
+            return;
+        }
+        if (currentInput[0] !== mysteryWord[0]) {
+            setError('Word must begin with same letter as is given.');
+            alert(error);
+            setCurrentInput('');
+            setCount(count);
             return;
         }
         alert('The word that you are guessing: ' + currentInput);
@@ -109,24 +134,32 @@ export default function Lingo() {
         <div className={'lingo-container'}>
             <div className={'grid'}>
                 {items.map((_, i) => (
-                    <div key={i} className="grid-item"> {i} </div>
+                    <div key={i} className="grid-item">{i}</div>
                 ))}
             </div>
             <div className={'grid'} id={'henk'}>
                 {rows.map((row, i) => (
                     row.map((item, j) => (
                         <div key={`${i}-${j}`}
-                             className={`grid-item ${item.inRightPlace ? 'letter-in-right-place' : ''} ${item.misPlacedLetter ? 'misplaced-letter' : ''} `}>{item.letter}</div>
+                             className={`grid-item ${item.inRightPlace ? 'letter-in-right-place' : ''} ${item.misPlacedLetter ? 'misplaced-letter' : ''} `}>
+                            {item.letter}
+                        </div>
                     ))
                 ))}
             </div>
             <div className={'form'}>
                 <form onSubmit={handleSubmit}>
                     <label>
-                        Word (objects):
-                        <input type={'text'} value={currentInput} onChange={handleChange}/>
+                        Word:
+                        <input
+                            type={'text'}
+                            value={currentInput}
+                            onChange={handleChange}
+                        />
                     </label>
-                    <button type={'submit'} disabled={currentInput.length !== 5}> Submit</button>
+                    <button type={'submit'} disabled={currentInput.length !== 5}>
+                        Submit
+                    </button>
                 </form>
             </div>
         </div>
