@@ -3,7 +3,6 @@ import './slingo.css';
 import axios from "axios";
 
 export default function Slingo() {
-    const items = Array.from({length: 25})
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
     const [currentRow, setCurrentRow] = useState(0);
@@ -12,18 +11,16 @@ export default function Slingo() {
     const [rows, setRows] = useState([]);
     const charOccurrences = useRef({});
     const [userScore, setUserScore] = useState(0);
-    const [numberOfRounds, setNumberOfRounds] = useState(1);
     const [guessedCorrectly, isGuessedCorrectly] = useState(false)
     const shortenedAlphabet = [...'abcdefghijklmnoprstuvwz'];
     const randomIndex = Math.floor(Math.random() * shortenedAlphabet.length);
     const randomLetter = shortenedAlphabet[randomIndex];
-    const randomInt = Math.floor(Math.random() * 100);
 
     useEffect(() => {
-        setUpNewRound();
+        setUpRound();
     }, []);
 
-    function setUpNewRound() {
+    function setUpRound() {
         const initialRows = createInitialRows();
         if (initialRows) {
             fetchWord(initialRows)
@@ -43,20 +40,22 @@ export default function Slingo() {
     const fetchWord = (initialRows) => {
         axios.get(`https://api.datamuse.com/words?sp=${randomLetter}????`)
             .then(response => {
-                if (response.data.length > randomInt && response.data[randomInt].word) {
-                    const suitableWord = response.data.find(wordObj => !wordObj.word.includes(' '));
-                    if (suitableWord) {
-                        const data = response.data[randomInt];
-                        setData(data);
-                        initialRows[0][0].letter = data.word[0];
-                        initialRows[0][0].inRightPlace = true;
-                        setRows(initialRows);
-                        const mysteryWord = data.word.split('');
-                        setMysteryWord(mysteryWord);
-                    } else {
-                        console.log('No suitable word found, retrying...');
-                        fetchWord();
-                    }
+                const randomInt = Math.floor(Math.random() * 100);
+                console.log('randomInt', randomInt)
+                if (response.data.length > randomInt && response.data[randomInt].word && !response.data[randomInt].word.includes(' ')) {
+                    console.log('response.data[randomInt]', response.data[randomInt]);
+                    const data = response.data[randomInt];
+                    setData(data);
+                    initialRows[0][0].letter = data.word[0];
+                    initialRows[0][0].inRightPlace = true;
+                    setRows(initialRows);
+                    const mysteryWord = data.word.split('');
+                    console.log('mysteryWord', mysteryWord);
+                    setMysteryWord(mysteryWord);
+                } else {
+                    console.log('No suitable word found, retrying...');
+                    console.log(initialRows)
+                    fetchWord(initialRows);
                 }
             })
             .catch(error => {
@@ -112,92 +111,71 @@ export default function Slingo() {
         })
     }
 
-    // const calculateScore = (newRow) => {
-    //     const correct = newRow.every(item => item.inRightPlace === true);
-    //     if (correct) {
-    //         setUserScore(+25);
-    //         setNumberOfRounds(+1);
-    //     }
-    // }
-
     const handleRowCheck = () => {
         const input = currentInput.split('');
         const newRows = [...rows];
 
         markRightPlaces(input, mysteryWord, currentRow, newRows, charOccurrences);
-
         markMisplacements(input, mysteryWord, currentRow, newRows, charOccurrences);
-
-        handleCharOccurrences();
 
         return newRows
     }
 
-    function calculateScore(newRow) {
-        return new Promise((resolve) => {
-            const allInRightPlace = newRow.every(item => item.inRightPlace === true);
-            if (allInRightPlace) {
-                console.log(userScore)
-                const newScore = userScore + 25;
-                resolve(newScore);
-            } else {
-                resolve(0);
-            }
-        });
+    const checkIfAllInRightPlace = (newRow) => {
+        return newRow.every(item => item.inRightPlace === true);
+    }
+
+    const invalidInput = (currentInput) => {
+        let validationError = '';
+
+        if (currentInput.length !== 5) {
+             validationError = 'Word must be of six characters.';
+
+        } else if (currentInput[0] !== mysteryWord[0]) {
+            validationError = 'Word must start with the given letter.';
+        }
+
+        return validationError
     }
 
     const handleSubmit = (event) => {
         handleCharOccurrences();
         event.preventDefault();
 
-        let validationError = '';
+        const invalid = invalidInput(currentInput);
 
-        if (currentInput.length !== 5) {
-            validationError = 'Word must be of six characters.';
-
-        } else if (currentInput[0] !== mysteryWord[0]) {
-            validationError = 'Word must start with the given letter.';
-        }
-
-        if (validationError) {
-            setError(validationError)
+        if (invalid) {
+            setError(invalid)
             setCurrentInput('');
             setCurrentRow(currentRow);
             return;
         }
+
+        setError('')
+
         alert('The word that you are guessing: ' + currentInput);
+
         const newRows = handleRowCheck()
-        calculateScore(newRows[currentRow]).then(score => {
-            setUserScore(score);
-        })
 
         setRows(newRows);
         setCurrentRow(currentRow + 1);
         setCurrentInput('');
-        setError(validationError);
-    }
 
-    useEffect(() => {
-        if (userScore > 0) {
+        const allInRightPlace = checkIfAllInRightPlace(newRows[currentRow]);
+
+        if (allInRightPlace) {
+            const newUserScore = userScore + 25;
+            setUserScore(newUserScore)
             isGuessedCorrectly(true);
         }
-    }, [userScore]);
-
-    console.log(mysteryWord)
-    console.log(guessedCorrectly)
+    }
 
     const handleNextRound = (event) => {
-        console.log('yay new round!');
         handleCharOccurrences();
         event.preventDefault();
-        setUpNewRound();
         setCurrentRow(0);
         isGuessedCorrectly(false);
-
-        // calculateScore(newRows[currentRow]).then(score => {
-        //     setUserScore(score);
-        // })
-
+        setUpRound();
     }
 
     return (
@@ -217,7 +195,8 @@ export default function Slingo() {
                     <div className={'slingo-container'}>
                         <div className={'grid'}>
                             {rows.map((row, i) => {
-                                const allInRightPlace = row.every(item => item.inRightPlace);
+                                // const allInRightPlace = row.every(item => item.inRightPlace);
+                                const allInRightPlace = checkIfAllInRightPlace(row);
                                 return row.map((item, j) => (
                                     <div key={`${i}-${j}`}
                                          className={`grid-item ${allInRightPlace ? 'all-correct' : ''} ${item.inRightPlace ? 'letter-in-right-place' : ''} ${item.misPlacedLetter ? 'misplaced-letter' : ''}`}>
@@ -260,8 +239,11 @@ export default function Slingo() {
                                 {userScore}
                             </div>
                         </div>
-                        <button disabled={!guessedCorrectly} onClick={handleNextRound}>
-                            <span className={'next-round-text'}> next round! </span>
+                        <button
+                            disabled={!guessedCorrectly}
+                            onClick={handleNextRound}
+                        >
+                            <span className={'next-round-text'}> NEXT ROUND </span>
                         </button>
                     </div>
 
