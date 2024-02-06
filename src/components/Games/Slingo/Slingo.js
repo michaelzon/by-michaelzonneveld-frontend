@@ -11,10 +11,11 @@ export default function Slingo() {
     const [rows, setRows] = useState([]);
     const charOccurrences = useRef({});
     const [userScore, setUserScore] = useState(0);
-    const [guessedCorrectly, isGuessedCorrectly] = useState(false)
+    const [isGuessedCorrectly, setGuessedCorrectly] = useState(false)
     const shortenedAlphabet = [...'abcdefghijklmnoprstuvwz'];
     const randomIndex = Math.floor(Math.random() * shortenedAlphabet.length);
     const randomLetter = shortenedAlphabet[randomIndex];
+    const isAlphabetical = /^[a-zA-Z]+$/;
 
     useEffect(() => {
         setUpRound();
@@ -41,16 +42,13 @@ export default function Slingo() {
         axios.get(`https://api.datamuse.com/words?sp=${randomLetter}????`)
             .then(response => {
                 const randomInt = Math.floor(Math.random() * 100);
-                console.log('randomInt', randomInt)
                 if (response.data.length > randomInt && response.data[randomInt].word && !response.data[randomInt].word.includes(' ')) {
-                    console.log('response.data[randomInt]', response.data[randomInt]);
                     const data = response.data[randomInt];
                     setData(data);
                     initialRows[0][0].letter = data.word[0];
                     initialRows[0][0].inRightPlace = true;
                     setRows(initialRows);
                     const mysteryWord = data.word.split('');
-                    console.log('mysteryWord', mysteryWord);
                     setMysteryWord(mysteryWord);
                 } else {
                     console.log('No suitable word found, retrying...');
@@ -128,8 +126,8 @@ export default function Slingo() {
     const invalidInput = (currentInput) => {
         let validationError = '';
 
-        if (currentInput.length !== 5) {
-             validationError = 'Word must be of six characters.';
+        if (!isAlphabetical.test(currentInput)) {
+            validationError = 'Only alphabetical characters are allowed';
 
         } else if (currentInput[0] !== mysteryWord[0]) {
             validationError = 'Word must start with the given letter.';
@@ -147,7 +145,6 @@ export default function Slingo() {
         if (invalid) {
             setError(invalid)
             setCurrentInput('');
-            setCurrentRow(currentRow);
             return;
         }
 
@@ -166,7 +163,7 @@ export default function Slingo() {
         if (allInRightPlace) {
             const newUserScore = userScore + 25;
             setUserScore(newUserScore)
-            isGuessedCorrectly(true);
+            setGuessedCorrectly(true);
         }
     }
 
@@ -174,9 +171,16 @@ export default function Slingo() {
         handleCharOccurrences();
         event.preventDefault();
         setCurrentRow(0);
-        isGuessedCorrectly(false);
+        setGuessedCorrectly(false);
         setUpRound();
     }
+
+    const canInsertSomething = () => {
+        const correctLength = currentInput.length === 5;
+        return correctLength && !isGuessedCorrectly;
+    }
+
+    console.log(mysteryWord);
 
     return (
         <div className={'logo-and-game-wrapper'}>
@@ -219,7 +223,7 @@ export default function Slingo() {
                                 onChange={handleChange}
                                 className={'form-input'}
                             />
-                            <button type={'submit'} disabled={currentInput.length !== 5}>
+                            <button type={'submit'} disabled={!canInsertSomething()}>
                                 <span className={'submit-text'}> SUBMIT </span>
                             </button>
                         </div>
@@ -240,7 +244,7 @@ export default function Slingo() {
                             </div>
                         </div>
                         <button
-                            disabled={!guessedCorrectly}
+                            disabled={!isGuessedCorrectly}
                             onClick={handleNextRound}
                         >
                             <span className={'next-round-text'}> NEXT ROUND </span>
