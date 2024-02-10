@@ -53,14 +53,25 @@ export default function Wordle() {
             //  dependency zetten, en dat als die wijzigt, er dan een hook komt, die dan al die rijen weer gaat opbiouwen
 
             if (e.key === 'Backspace') {
-                removeLetterFromTile(rows[turn])
+                if (currentTileIndex > 0) {
+                    setRows(prev => {
+                        const newRows = [...prev];
+                        newRows[turn][currentTileIndex - 1].letter = "";
+                        newRows[turn][currentTileIndex - 1].evaluation = "";
+                        return newRows;
+                    });
+                    setCurrentTileIndex(prev => prev - 1);
+                }
+                else {
+                    return
+                }
             }
 
             if (e.key === 'Enter') {
                 const input = rows[turn].map(tile => tile.letter).join('');
                 alert('The word that you are guessing: ' + input);
                 setCurrentInput(input);
-                setTurn(turn + 1);
+                setTurn(prev => prev + 1);
                 setCurrentTileIndex(0);
                 evaluateLetter(rows[turn]);
             }
@@ -73,13 +84,11 @@ export default function Wordle() {
         };
     }, [turn, currentTileIndex]);
 
-    console.log(currentInput);
+    console.log('rows', rows);
 
-    // misschien dan hier toch
     const addLetterToTile = (key) => {
-        setRows(currentRows => {
-            console.log('currentRows', currentRows);
-            const newRows = [...currentRows];
+        setRows(prev => {
+            const newRows = [...prev];
             const newRow = [...newRows[turn]];
             newRow[currentTileIndex] = {...newRow[currentTileIndex], letter: key};
             newRows[turn] = newRow;
@@ -104,6 +113,7 @@ export default function Wordle() {
 
     }
 
+    console.log(mysteryWord);
 
     return (
         <div className={'wordle-wrapper'}>
