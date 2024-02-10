@@ -11,6 +11,7 @@ import AboutMe from "./components/AboutMe/AboutMe";
 import Footer from "./components/Footer/Footer";
 import Slingo from "./components/Games/Slingo/Slingo";
 import Overview from "./components/Games/Overview";
+import Wordle from "./components/Games/wordle/Wordle";
 
 
 export default function App() {
@@ -194,6 +195,7 @@ export default function App() {
                             <Route path={"/:album/:id"} element={<Photo photos={photos}/>}/>
                             <Route path={"/games/"} element={<Overview/>}/>
                             <Route path={"/games/slingo"} element={<Slingo/>}/>
+                            <Route path={"/games/wordle"} element={<Wordle/>}/>
                         </Routes>
                     </div>
                 </div>

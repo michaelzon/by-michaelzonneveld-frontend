@@ -9,6 +9,9 @@ export default function Overview() {
             <Link to={`/games/slingo`}>
                 <p> Slingo </p>
             </Link>
+            <Link to={`/games/wordle`}>
+                <p> Wordle </p>
+            </Link>
         </div>
     );
 };

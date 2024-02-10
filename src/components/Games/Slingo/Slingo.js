@@ -11,11 +11,10 @@ export default function Slingo() {
     const [rows, setRows] = useState([]);
     const charOccurrences = useRef({});
     const [userScore, setUserScore] = useState(0);
-    const [isGuessedCorrectly, setGuessedCorrectly] = useState(false)
+    const [isGuessedCorrectly, setGuessedCorrectly] = useState(false);
     const shortenedAlphabet = [...'abcdefghijklmnoprstuvwz'];
-    const randomIndex = Math.floor(Math.random() * shortenedAlphabet.length);
-    const randomLetter = shortenedAlphabet[randomIndex];
-    const isAlphabetical = /^[a-zA-Z]+$/;
+    const newRandomIndex = Math.floor(Math.random() * shortenedAlphabet.length);
+    const newRandomLetter = shortenedAlphabet[newRandomIndex];
 
     useEffect(() => {
         setUpRound();
@@ -24,7 +23,7 @@ export default function Slingo() {
     function setUpRound() {
         const initialRows = createInitialRows();
         if (initialRows) {
-            fetchWord(initialRows)
+            fetchWord(initialRows, newRandomLetter)
         }
     }
 
@@ -38,7 +37,8 @@ export default function Slingo() {
         );
     }
 
-    const fetchWord = (initialRows) => {
+
+    const fetchWord = (initialRows, randomLetter) => {
         axios.get(`https://api.datamuse.com/words?sp=${randomLetter}????`)
             .then(response => {
                 const randomInt = Math.floor(Math.random() * 100);
@@ -52,8 +52,7 @@ export default function Slingo() {
                     setMysteryWord(mysteryWord);
                 } else {
                     console.log('No suitable word found, retrying...');
-                    console.log(initialRows)
-                    fetchWord(initialRows);
+                    fetchWord(initialRows, randomLetter);
                 }
             })
             .catch(error => {
@@ -125,7 +124,7 @@ export default function Slingo() {
 
     const invalidInput = (currentInput) => {
         let validationError = '';
-
+        const isAlphabetical = /^[a-z]+$/;
         if (!isAlphabetical.test(currentInput)) {
             validationError = 'Only alphabetical characters are allowed';
 
@@ -197,14 +196,15 @@ export default function Slingo() {
             <div className={'slingo-and-form-wrapper'}>
                 <div className={'slingo-wrapper'}>
                     <div className={'slingo-container'}>
-                        <div className={'grid'}>
+                        <div className={'slingo-grid'}>
                             {rows.map((row, i) => {
+                                console.log(row);
                                 // const allInRightPlace = row.every(item => item.inRightPlace);
                                 const allInRightPlace = checkIfAllInRightPlace(row);
                                 return row.map((item, j) => (
                                     <div key={`${i}-${j}`}
-                                         className={`grid-item ${allInRightPlace ? 'all-correct' : ''} ${item.inRightPlace ? 'letter-in-right-place' : ''} ${item.misPlacedLetter ? 'misplaced-letter' : ''}`}>
-                                        {item.letter}
+                                         className={`slingo-grid-item ${allInRightPlace ? 'all-correct' : ''} ${item.inRightPlace ? 'letter-in-right-place' : ''} ${item.misPlacedLetter ? 'misplaced-letter' : ''}`}>
+                                        {item.letter ? item.letter : i === currentRow && !isGuessedCorrectly ? '.' : ''}
                                     </div>
                                 ));
                             })}
