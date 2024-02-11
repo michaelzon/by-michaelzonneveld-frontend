@@ -22,6 +22,6 @@
 }
 
 .sidebar a:hover {
-    color: var(--very-light-gray-darker);
+    color: var(--very-light-gray-dark);
     transform: translateX(3px);
 }

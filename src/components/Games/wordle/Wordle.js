@@ -15,7 +15,7 @@ export default function Wordle() {
         'zxcvbnm<>'.split(''),
     ];
 
-    console.log('keys', keys);
+    const [keyColors, setKeyColors] = useState(keys.map(row => row.map(key => ({key: key, color: ''}))));
 
     const fetchWord = () => {
         axios.get(`https://api.datamuse.com/words?sp=?????`)
@@ -32,7 +32,6 @@ export default function Wordle() {
                 console.log('error fetching wordle data', error);
             });
     }
-
 
     const initRows = () => {
         return Array(6).fill(null).map(() =>
@@ -81,9 +80,9 @@ export default function Wordle() {
                 const input = rows[turn].map(tile => tile.letter).join('');
                 alert('The word that you are guessing: ' + input);
                 setCurrentInput(input);
-                setTurn(prev => prev + 1);
                 setCurrentTileIndex(0);
                 evaluateLetter(rows[turn]);
+                setTurn(prev => prev + 1);
             }
         }
 
@@ -116,8 +115,10 @@ export default function Wordle() {
     }
 
     const evaluateLetter = (currentRow) => {
+        let shouldColorKeys = false;
         currentRow.forEach((tile, index) => {
             if (tile.letter === mysteryWord[index]) {
+                shouldColorKeys = true;
                 setRows(prev => {
                     const newRows = [...prev];
                     newRows[turn][index].evaluation = 'correct';
@@ -131,6 +132,7 @@ export default function Wordle() {
         currentRow.forEach((tile, index) => {
             let presentAmount = 0;
             if (mysteryWord.includes(tile.letter)) { // je moet hem eerst alle correcten laten checken zodat je niet een 'e' markeert als geel als je 'eeeee' invoert bij 'hello', want dan kan je er voor zorgen dat e niet geel krijgt afhankelijk van de count letterfrequency, e is in dat geval dan e:0 omdat dat is afgetrokken van e op het moment dat ie als groeg werd gemarkeerd.
+                shouldColorKeys = true;
                 setRows(prev => {
                     const newRows = [...prev];
                     if (frequencies.current[tile.letter] > presentAmount) {
@@ -141,18 +143,43 @@ export default function Wordle() {
                     return newRows;
                 });
             } else {
+                shouldColorKeys = true;
                 setRows(prev => {
                     const newRows = [...prev];
                     newRows[turn][index].evaluation = 'absent';
                     return newRows;
                 });
             }
+
         });
+        if (shouldColorKeys) {
+            colorKeys();
+        }
     }
 
-    console.log('mysteryword', mysteryWord);
-    // console.log('rows', rows);
-    // console.log('frequencies', frequencies)
+    const checkEvaluation = (rows, keyColor, evaluation) => {
+        const flattenedRows = rows.flat();
+        return flattenedRows.some(tile => tile.letter === keyColor.key && tile.evaluation === evaluation);
+    }
+
+    const colorKeys = () => {
+        setKeyColors(prev =>
+            prev.map(row =>
+                row.map(keyColor => {
+                    const isAbsent = checkEvaluation(rows, keyColor, 'absent');
+                    const isPresent = checkEvaluation(rows, keyColor, 'present');
+                    const isCorrect = checkEvaluation(rows, keyColor, 'correct');
+                    if (isCorrect) {
+                        return {...keyColor, color: 'green'}
+                    } else if (isPresent) {
+                        return {...keyColor, color: 'yellow'}
+                    } else if (isAbsent) {
+                        return {...keyColor, color: 'grey'}
+                    }
+                    return keyColor
+                })))
+    }
+
     return (
         <div className={'wordle-wrapper'}>
             <div className={'wordle-grid-wrapper'}>
@@ -168,13 +195,16 @@ export default function Wordle() {
                 </div>
             </div>
             <div className={'keyboard'}>
-                {keys.map((row, i) => (
-                    <div className={'keyboard--row'} key={`${i}`}>
-                        {row.map((key, j) => (
-                            <div className={'keyboard--key--outer'} key={`${j}`}>
-                                <div className={'keyboard--key--inner'}>
-                                    <div className={'keyboard--key--text'}>
-                                        {key}
+                {keyColors.map((row, i) => (
+                    <div className={'keyboard-row'} key={`${i}`}>
+                        {row.map((keyObj, j) => (
+                            <div
+                                className={`keyboard-key--outer ${keyObj.color === 'grey' && 'key--outer__absent'} ${keyObj.color === 'yellow' && 'key--outer__present'} ${keyObj.color === 'green' && 'key--outer__correct'}`}
+                                key={`${j}`}>
+                                <div
+                                    className={`keyboard-key--inner ${keyObj.color === 'grey' && 'key--inner__absent'} ${keyObj.color === 'yellow' && 'key--inner__present'} ${keyObj.color === 'green' && 'key--inner__correct'}`}>
+                                    <div className={'keyboard-key--text'}>
+                                        {keyObj.key}
                                     </div>
                                 </div>
                             </div>

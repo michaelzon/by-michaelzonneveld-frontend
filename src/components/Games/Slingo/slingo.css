@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     gap: 6rem;
-    background-color: var(--very-light-gray-darker);
+    background-color: var(--very-light-gray-dark);
     border-radius: 2rem;
     padding: 4rem;
 }
@@ -108,7 +108,7 @@
 
 .slingo-grid-item {
     background-color: var(--teal-blue);
-    border: 2px solid var(--very-light-gray-darker);
+    border: 2px solid var(--very-light-gray-dark);
     color: var(--very-light-gray);
     padding: 1px;
     width: 6rem;
