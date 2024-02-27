@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
-import Comments from "../Comments/Comments";
 import './photo.css';
 
 
@@ -36,8 +35,8 @@ export default function Photo({photos}) {
                 </div>
                 :
                 <p> Loading photo... </p>
+
             }
-            <Comments></Comments>
         </div>
     )
 }

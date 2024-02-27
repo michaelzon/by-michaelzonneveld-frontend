@@ -5,7 +5,7 @@ export default function Home({photos}) {
 
     return (
         <div className='home'>
-            homepage
+            Welcome to my website!
         </div>
     );
 };

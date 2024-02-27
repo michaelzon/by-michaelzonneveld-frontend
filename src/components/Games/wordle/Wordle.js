@@ -22,7 +22,8 @@ export default function Wordle() {
             .then(response => {
                 const randomInt = Math.floor(Math.random() * 100);
                 if (response.data.length > randomInt && response.data[randomInt].word && !response.data[randomInt].word.includes(' ')) {
-                    setMysteryWord(response.data[randomInt].word.split(''));
+                    // setMysteryWord(response.data[randomInt].word.split(''));
+                    setMysteryWord(['a', 'p', 'p', 'l', 'e'])
                 } else {
                     console.log('No suitable word found, retrying...');
                     fetchWord();
@@ -71,7 +72,7 @@ export default function Wordle() {
             }
 
             if (e.key === 'Backspace') {
-                // setCurrentInput(prev => prev + e.key) // todo dit moet nog beter, indien currentInput als state later nodig is.
+                // setCurrentInput(prev => prev + e.key)
                 removeLetterFromTile()
             }
 
@@ -81,7 +82,7 @@ export default function Wordle() {
                 alert('The word that you are guessing: ' + input);
                 setCurrentInput(input);
                 setCurrentTileIndex(0);
-                evaluateLetter(rows[turn]);
+                evaluateLetters(rows[turn]);
                 setTurn(prev => prev + 1);
             }
         }
@@ -114,7 +115,7 @@ export default function Wordle() {
         }
     }
 
-    const evaluateLetter = (currentRow) => {
+    const evaluateLetters = (currentRow) => {
         let shouldColorKeys = false;
         currentRow.forEach((tile, index) => {
             if (tile.letter === mysteryWord[index]) {
@@ -179,6 +180,8 @@ export default function Wordle() {
                     return keyColor
                 })))
     }
+
+    console.log(mysteryWord);
 
     return (
         <div className={'wordle-wrapper'}>

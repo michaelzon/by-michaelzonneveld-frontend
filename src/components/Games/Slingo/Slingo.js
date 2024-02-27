@@ -45,11 +45,14 @@ export default function Slingo() {
                 if (response.data.length > randomInt && response.data[randomInt].word && !response.data[randomInt].word.includes(' ')) {
                     const data = response.data[randomInt];
                     setData(data);
-                    initialRows[0][0].letter = data.word[0];
+                    // initialRows[0][0].letter = data.word[0];
+                    initialRows[0][0].letter = 'a'
                     initialRows[0][0].inRightPlace = true;
                     setRows(initialRows);
-                    const mysteryWord = data.word.split('');
-                    setMysteryWord(mysteryWord);
+                    // const mysteryWord = data.word.split('');
+                    setMysteryWord(['a', 'p', 'p', 'l', 'e'])
+
+                    // setMysteryWord(mysteryWord);
                 } else {
                     console.log('No suitable word found, retrying...');
                     fetchWord(initialRows, randomLetter);
@@ -60,6 +63,11 @@ export default function Slingo() {
             });
     }
 
+
+    async function getWord(randomLetter) {
+        const response = await fetch(`https://api.datamuse.com/words?sp=${randomLetter}????`);
+        const words = await response.json();
+    }
     const handleChange = (event) => {
         setCurrentInput(event.target.value);
     }
@@ -179,7 +187,6 @@ export default function Slingo() {
         return correctLength && !isGuessedCorrectly;
     }
 
-    console.log(mysteryWord);
 
     return (
         <div className={'logo-and-game-wrapper'}>
