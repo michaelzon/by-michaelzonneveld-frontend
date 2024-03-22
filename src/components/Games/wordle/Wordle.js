@@ -215,7 +215,6 @@ export default function Wordle() {
                     </div>
                 ))}
             </div>
-            hi
         </div>
     )
 }
