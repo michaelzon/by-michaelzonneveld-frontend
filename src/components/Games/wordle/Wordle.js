@@ -181,8 +181,6 @@ export default function Wordle() {
                 })))
     }
 
-    console.log(mysteryWord);
-
     return (
         <div className={'wordle-wrapper'}>
             <div className={'wordle-grid-wrapper'}>
