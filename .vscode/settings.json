@@ -2,5 +2,7 @@
     "appService.zipIgnorePattern": [
         "node_modules{,/**}",
         ".vscode{,/**}"
-    ]
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/dcca7831-75dc-4eb0-b56a-89f83f5dfb6e/resourceGroups/michaelzonneveld_group/providers/Microsoft.Web/sites/michaelzonneveld",
+    "appService.deploySubpath": "build"
 }
